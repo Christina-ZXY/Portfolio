@@ -4,7 +4,8 @@
 
   /* Define default CSS variables (light mode) */
   :root {
-    --background: 210 40% 98%;
+    --background: 210 60% 96%;
+
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -87,4 +88,42 @@
   margin: 0 auto;
   padding: 0;
   text-align: center;
+}
+
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+}
+
+
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes meteor-fall {
+  0% {
+    transform: translateX(0) translateY(0) rotate(45deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(200px) translateY(200px) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.meteor {
+  @apply absolute bg-gradient-to-r from-pink-300 via-purple-200 to-transparent rounded-full;
+  box-shadow: 0 0 10px 5px rgba(236, 180, 255, 0.4);
+
 }
