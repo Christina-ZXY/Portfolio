@@ -17,11 +17,9 @@ export const StarBackground = () => {
       const col = i % cols;
       const row = Math.floor(i / cols) % rows;
 
-      // 每个格子宽高
       const cellWidth = (100 - 2 * marginPercent) / cols;
       const cellHeight = (100 - 2 * marginPercent) / rows;
 
-      // 在格子内部随机偏移
       const x = marginPercent + col * cellWidth + Math.random() * cellWidth;
       const y = marginPercent + row * cellHeight + Math.random() * cellHeight;
 
@@ -38,7 +36,6 @@ export const StarBackground = () => {
 
     setStars(newStars);
   };
-
 
   const generateMeteors = () => {
     const newMeteors = [];
@@ -57,31 +54,31 @@ export const StarBackground = () => {
     const handleResize = () => {
       if (isDark) {
         generateStars();
-      } else {
         generateMeteors();
+      } else {
+        setStars([]);
+        setMeteors([]);
       }
     };
 
-    // 先生成对应的元素
     if (isDark) {
       generateStars();
-      setMeteors([]); // 切到夜晚，清空流星
-    } else {
       generateMeteors();
-      setStars([]); // 切到白天，清空星星
+    } else {
+      setStars([]);
+      setMeteors([]);
     }
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isDark]);
 
-
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDark(document.documentElement.classList.contains("dark"));
     };
 
-    checkDarkMode(); // 初次
+    checkDarkMode(); // 初始检查
     const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, { attributes: true });
 
@@ -90,42 +87,43 @@ export const StarBackground = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {isDark ? (
-        stars.map((star) => (
-          <div
-            key={star.id}
-            className="star animate-pulse-subtle"
-            style={{
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              opacity: star.opacity,
-              animationDuration: `${star.animationDuration}s`,
-              position: "absolute",
-              borderRadius: "50%",
-              backgroundColor: "white",
-              boxShadow: "0 0 8px 2px rgba(255, 255, 255, 0.3)",
-            }}
-          />
-        ))
-      ) : (
-        meteors.map((meteor) => (
-          <div
-            key={meteor.id}
-            className="meteor"
-            style={{
-              position: "absolute",
-              top: `${meteor.top}%`,
-              left: `${meteor.left}%`,
-              width: "100px",
-              height: "2px",
-              background: "linear-gradient(90deg, white, transparent)",
-              transform: "rotate(45deg)",
-              animation: `meteor-fall 1s linear ${meteor.delay}s infinite`,
-            }}
-          />
-        ))
+      {isDark && (
+        <>
+          {stars.map((star) => (
+            <div
+              key={star.id}
+              className="star animate-pulse-subtle"
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                opacity: star.opacity,
+                animationDuration: `${star.animationDuration}s`,
+                position: "absolute",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                boxShadow: "0 0 8px 2px rgba(255, 255, 255, 0.3)",
+              }}
+            />
+          ))}
+          {meteors.map((meteor) => (
+            <div
+              key={meteor.id}
+              className="meteor"
+              style={{
+                position: "absolute",
+                top: `${meteor.top}%`,
+                left: `${meteor.left}%`,
+                width: "100px",
+                height: "2px",
+                background: "linear-gradient(90deg, white, transparent)",
+                transform: "rotate(45deg)",
+                animation: `meteor-fall 1s linear ${meteor.delay}s infinite`,
+              }}
+            />
+          ))}
+        </>
       )}
     </div>
   );
