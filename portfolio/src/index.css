@@ -2,36 +2,63 @@
 
 @layer base {
 
-  /* Define default CSS variables (light mode) */
+  /* 🌞 浅色模式颜色变量 */
   :root {
-    --background: 210 60% 96%;
+    --background-h: 210;
+    --background-s: 60%;
+    --background-l: 96%;
 
-    --foreground: 222 47% 11%;
+    --foreground-h: 222;
+    --foreground-s: 47%;
+    --foreground-l: 11%;
 
-    --card: 0 0% 100%;
+    --card-h: 0;
+    --card-s: 0%;
+    --card-l: 100%;
 
-    --primary: 250 47% 60%;
-    --primary-foreground: 210 40% 98%;
+    --primary-h: 250;
+    --primary-s: 47%;
+    --primary-l: 60%;
 
-    --border: 214 32% 91%;
+    --primary-foreground-h: 210;
+    --primary-foreground-s: 40%;
+    --primary-foreground-l: 98%;
+
+    --border-h: 214;
+    --border-s: 32%;
+    --border-l: 91%;
   }
 
-  /* Dark mode overrides variables */
+  /* 🌙 暗色模式颜色变量 */
   .dark {
-    --background: 222 47% 4%;
-    --foreground: 213 31% 91%;
+    --background-h: 222;
+    --background-s: 47%;
+    --background-l: 4%;
 
-    --card: 222 47% 8%;
+    --foreground-h: 213;
+    --foreground-s: 31%;
+    --foreground-l: 91%;
 
-    --primary: 250 65% 65%;
-    --primary-foreground: 213 31% 91%;
+    --card-h: 222;
+    --card-s: 47%;
+    --card-l: 8%;
 
-    --border: 217 33% 20%;
+    --primary-h: 250;
+    --primary-s: 65%;
+    --primary-l: 65%;
+
+    --primary-foreground-h: 213;
+    --primary-foreground-s: 31%;
+    --primary-foreground-l: 91%;
+
+    --border-h: 217;
+    --border-s: 33%;
+    --border-l: 20%;
   }
 
-  /* Apply border color to all elements */
+  /* 全局样式 */
   * {
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--border-h), var(--border-s), var(--border-l));
   }
 
   html {
@@ -39,14 +66,79 @@
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: hsl(var(--background-h), var(--background-s), var(--background-l));
+    color: hsl(var(--foreground-h), var(--foreground-s), var(--foreground-l));
     transition: background-color 0.3s, color 0.3s;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  .text-foreground {
+    color: hsl(var(--foreground-h), var(--foreground-s), var(--foreground-l));
+  }
+
+  .text-primary {
+    color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+  }
+
+  .text-foreground-80 {
+    color: hsla(var(--foreground-h), var(--foreground-s), var(--foreground-l), 0.8);
+    transition: color 0.3s;
+  }
+
+  .text-foreground-80:hover {
+    color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+  }
 }
 
-/* Responsive container widths */
+@layer utilities {
+
+  /* 🌟 Cosmic 按钮样式 */
+  .cosmic-button {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    color: hsl(var(--primary-foreground-h), var(--primary-foreground-s), var(--primary-foreground-l));
+    font-weight: 500;
+    transition-property: all;
+    transition-duration: 300ms;
+  }
+
+  .cosmic-button:hover {
+    box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.5);
+    transform: scale(1.05);
+  }
+
+  .cosmic-button:active {
+    transform: scale(0.95);
+  }
+
+  /* 🌈 渐变边框 */
+  .gradient-border {
+    @apply relative rounded-md;
+    background: linear-gradient(to right, hsl(var(--card-h), var(--card-s), var(--card-l)), hsl(var(--card-h), var(--card-s), var(--card-l)));
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+
+  /* 🪄 卡片悬浮效果 */
+  .card-hover {
+    transition: transform 0.3s;
+    border-radius: 0.5rem;
+    background-color: hsl(var(--card-h), var(--card-s), var(--card-l));
+    color: hsl(var(--foreground-h), var(--foreground-s), var(--foreground-l));
+  }
+
+  .card-hover:hover {
+    transform: scale(1.02);
+    background-color: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* 📱 响应式容器宽度 */
 .container {
   margin-inline: auto;
   padding-inline: 2rem;
@@ -90,6 +182,7 @@
   text-align: center;
 }
 
+/* 🌟 动画 */
 @keyframes pulse-subtle {
 
   0%,
@@ -103,8 +196,6 @@
     transform: scale(1.1);
   }
 }
-
-
 
 .animate-pulse-subtle {
   animation: pulse-subtle 2s ease-in-out infinite;
@@ -125,5 +216,50 @@
 .meteor {
   @apply absolute bg-gradient-to-r from-pink-300 via-purple-200 to-transparent rounded-full;
   box-shadow: 0 0 10px 5px rgba(236, 180, 255, 0.4);
+}
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-delay-1 {
+
+  0%,
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease forwards;
+}
+
+.animate-fade-in-delay-1 {
+  animation: fade-in 1s ease forwards;
+  animation-delay: 1s;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fade-in 1s ease forwards;
+  animation-delay: 2s;
+}
+
+.animate-fade-in-delay-3 {
+  animation: fade-in 1s ease forwards;
+  animation-delay: 3s;
+}
+
+.animate-fade-in-delay-4 {
+  animation: fade-in 1s ease forwards;
+  animation-delay: 4s;
 }
